@@ -29,24 +29,9 @@ body {
   letter-spacing: -0.01em;
   line-height: 1.8;
   -webkit-font-smoothing: antialiased;
-  color: #fff;
+  color: #000;
   font-family: "Roboto", arial, sans-serif;
-  font-size: 25.6px;
-  font-size: 3.33333vw;
-  font-weight: 300;
-}
-
-@media (max-width: 360px) {
-  body {
-    font-size: 12px;
-    font-size: 3.33333vw;
-  }
-}
-
-@media (min-width: 1025px) {
-  body {
-    font-size: 12px;
-  }
+  font-size: 15px;
 }
 
 nav ul {
@@ -170,17 +155,50 @@ img {
   display: block;
 }
 
-.box {
-  width: 360px;
-  width: 36000/1440px/1vw;
-  height: 100px;
-  background-color: #ffff99;
+.calendar {
+  max-width: 1440px;
 }
 
-@media (min-width: 1440px) {
-  .box {
-    width: 360px;
-  }
+.calendar .content {
+  width: 33.3%;
+  padding: 10px;
+  float: left;
+  height: 440px;
+}
+
+.calendar .content:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.calendar .wrap {
+  border: solid #ccc;
+  border-width: 0 0 1px 1px;
+}
+
+.calendar .week {
+  display: flex;
+}
+
+.calendar .week .day {
+  border: solid #ccc;
+  border-width: 1px 1px 0 0;
+  width: calc(100% / 7);
+  height: 60px;
+}
+
+.calendar .week .day.grayed {
+  color: rgba(0, 0, 0, 0.2);
+}
+
+.calendar .week .day.selected {
+  background-color: deepskyblue;
+}
+
+.calendar .week.header .day {
+  height: 25px;
+  text-align: center;
 }
 
 

@@ -5,7 +5,31 @@
 .blind{position:absolute;left:-99999px;top:-9999999px;font-size:0;}
 .break {display:block;}
 
-.box{
-    @include vw-convert-pc(width, 360);height:100px;background-color:#ffff99;
-}
+.calendar{
+    max-width:1440px;
+    .content{
+        width:33.3%;padding:10px;float:left;height:440px;
+        &:after{
+            content:"";display:block;clear:both;
+        }
+    }
+    .wrap{
+        border:solid #ccc;border-width:0 0 1px 1px;
+    }
+    .week{
+        display:flex;
+        .day{
+            border:solid #ccc;border-width:1px 1px 0 0;width:calc(100% / 7 );height:60px;
+            &.grayed{
+                color:rgba(0,0,0,.2);
+            }
+            &.selected{
+                background-color:deepskyblue;
+            }
+        }
+        &.header .day{
+            height:25px;text-align:center;
+        }
+    }
 
+}
