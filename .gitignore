@@ -7,8 +7,8 @@
 .pnp.js
 build
 */build
-dist/style.css.map
-*/dist/style.css.map
+dist/css/style.css.map
+*/dist/css/style.css.map
 
 # testing
 /coverage
