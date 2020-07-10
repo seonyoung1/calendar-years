@@ -1,0 +1,11 @@
+@charset "utf-8";
+
+.clearfix:after {content:""; display:block; clear:both; visibility:hidden; line-height:0; height:0;}
+.clearfix {display:block;}
+.blind{position:absolute;left:-99999px;top:-9999999px;font-size:0;}
+.break {display:block;}
+
+.box{
+    @include vw-convert-pc(width, 360);height:100px;background-color:#ffff99;
+}
+

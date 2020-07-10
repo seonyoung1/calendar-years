@@ -1,0 +1,187 @@
+@import url(https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap);
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  box-sizing: border-box;
+}
+
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+body {
+  letter-spacing: -0.01em;
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+  color: #fff;
+  font-family: "Roboto", arial, sans-serif;
+  font-size: 25.6px;
+  font-size: 3.33333vw;
+  font-weight: 300;
+}
+
+@media (max-width: 360px) {
+  body {
+    font-size: 12px;
+    font-size: 3.33333vw;
+  }
+}
+
+@media (min-width: 1025px) {
+  body {
+    font-size: 12px;
+  }
+}
+
+nav ul {
+  list-style: none;
+}
+
+blockquote, q {
+  quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+
+/* change colours to suit your needs */
+ins {
+  background-color: #ff9;
+  color: #000;
+  text-decoration: none;
+}
+
+/* change colours to suit your needs */
+mark {
+  background-color: #ff9;
+  color: #000;
+  font-style: italic;
+  font-weight: bold;
+}
+
+del {
+  text-decoration: line-through;
+}
+
+abbr[title], dfn[title] {
+  border-bottom: 1px dotted;
+  cursor: help;
+}
+
+table {
+  border-collapse: collapse;
+  border: 0 none;
+}
+
+/* change border colour to suit your needs */
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #cccccc;
+  margin: 1em 0;
+  padding: 0;
+}
+
+input, select, textarea {
+  vertical-align: middle;
+  box-sizing: border-box;
+  border-radius: 0;
+  font-family: "Roboto", arial, sans-serif;
+  font-size: 1em;
+}
+
+input {
+  margin: 0;
+}
+
+img, fieldset {
+  border: 0;
+}
+
+ul, ol, li {
+  list-style-type: none;
+}
+
+li img {
+  vertical-align: top;
+}
+
+button {
+  box-sizing: border-box;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-family: "Roboto", arial, sans-serif;
+  font-size: 1em;
+  font-weight: 300;
+}
+
+a {
+  text-decoration: none;
+}
+
+img {
+  vertical-align: middle;
+  font-size: 0;
+}
+
+.clearfix:after {
+  content: "";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0;
+}
+
+.clearfix {
+  display: block;
+}
+
+.blind {
+  position: absolute;
+  left: -99999px;
+  top: -9999999px;
+  font-size: 0;
+}
+
+.break {
+  display: block;
+}
+
+.box {
+  width: 360px;
+  width: 36000/1440px/1vw;
+  height: 100px;
+  background-color: #ffff99;
+}
+
+@media (min-width: 1440px) {
+  .box {
+    width: 360px;
+  }
+}
+
+
+/*# sourceMappingURL=style.css.map*/
