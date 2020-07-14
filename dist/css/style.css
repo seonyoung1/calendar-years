@@ -181,22 +181,22 @@ img {
   display: flex;
 }
 
-.calendar .week .day {
+.calendar .week > div {
   border: solid #ccc;
   border-width: 1px 1px 0 0;
   width: calc(100% / 7);
   height: 60px;
 }
 
-.calendar .week .day.grayed {
+.calendar .week .grayed {
   color: rgba(0, 0, 0, 0.2);
 }
 
-.calendar .week .day.selected {
+.calendar .week .selected {
   background-color: deepskyblue;
 }
 
-.calendar .week.header .day {
+.calendar .week.header > div {
   height: 25px;
   text-align: center;
 }

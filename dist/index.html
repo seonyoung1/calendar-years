@@ -8,72 +8,118 @@
 </head>
 <body>
 <div id="wrapper">
-
     <div class="calendar">
-
     </div>
 </div>
 
 <script type="text/javascript" src="js/lib.min.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
 <script>
-    // var today = moment();
-    // console.log(today.format('LLLL'));
-    // console.log(today.startOf('month').week());
-	// console.log(today.endOf('month').week());
-    //
-	// console.log(today.startOf('month').add(0, 'month').format());
-	// console.log(today.startOf('month').add(1, 'month').startOf('month').week());
-	// console.log(today.startOf('month').add(1, 'month').endOf('month').week());
 
-	var calendar = function(add){
-		var today = moment().add(add, 'month');
-		var todayMonth = today.format('MM')
-		var startWeek = today.startOf('month').week();
-		// var endWeek = today.endOf('month').week();
-		var endWeek = today.endOf('month').week() === 1 ? 53 : today.endOf('month').week();
-		// console.log(today)
-		var calendar = '';
-		calendar += '<div class="content">'
-		calendar += '<p class="title">' + today.format('Y') + '년 ' + today.format('M') +'월</p>'
-		calendar += '<div class="wrap">'
-        calendar += '<div class="week header">'
-		calendar += '<div class="day">일</div><div class="day">월</div><div class="day">화</div><div class="day">수</div><div class="day">목</div><div class="day">금</div><div class="day">토</div>'
-		calendar += '</div>'
-
-        for( var week = startWeek; week <= endWeek; week++ ){
-			calendar += '<div class="week">'
-            for(var i=0; i<7; i++ ){
-
-				var className = 'day';
-            	var current = today.week(week).startOf('week').add(i, 'day');
-
-				// var isToday = today.format('YYYYMMDD') === current.format('YYYYMMDD') ? 'today' : '';
-				// let isGrayed = current.format('MM') === today.format('MM') ? '' : 'grayed';
-
-                // console.log(todayMonth)
-				if( current.format('MM') !== todayMonth){
-					className = className.concat(' grayed')
-                }
-
-				calendar += '<div class="'+ className +'" data-role="'+ current.format('YYYY-MM-DD') + '">';
-				calendar += '<span class="number">'+ current.format('D') +'</span>';
-				calendar += '</div>'
-
-            }
+	var calendar = {
+		init: function(){
+            this.yearPrint();
+        },
+        yearPrint: function(){
+			var repeat = 12;
+			for(var k = 0; k < repeat; k++){
+				this.draw(k);
+			}
+        },
+        draw: function(add){
+			var today = moment().add(add, 'month');
+			var todayMonth = today.format('MM')
+			var startWeek = today.startOf('month').week();
+			// var endWeek = today.endOf('month').week();
+			var endWeek = today.endOf('month').week() === 1 ? 53 : today.endOf('month').week();
+			// console.log(today)
+			var calendar = '';
+			calendar += '<div class="content">'
+			calendar += '<p class="title">' + today.format('Y') + '년 ' + today.format('M') +'월</p>'
+			calendar += '<div class="wrap">'
+			calendar += '<div class="week header">'
+			calendar += '<div>일</div><div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div>토</div>'
 			calendar += '</div>'
+			calendar += '<div class="table">'
+
+			for( var week = startWeek; week <= endWeek; week++ ){
+				calendar += '<div class="week">'
+				for(var i=0; i<7; i++ ){
+					var current = today.week(week).startOf('week').add(i, 'day');
+
+					// var isToday = today.format('YYYYMMDD') === current.format('YYYYMMDD') ? 'today' : '';
+					// let isGrayed = current.format('MM') === today.format('MM') ? '' : 'grayed';
+
+					// console.log(todayMonth)
+					if( current.format('MM') !== todayMonth){
+						calendar += '<div class="grayed">';
+					}else{
+						calendar += '<div class="day" data-role="'+ current.format('YYYY-MM-DD') + '">';
+                    }
+
+					calendar += '<span class="number">'+ current.format('D') +'</span>';
+					calendar += '</div>'
+
+				}
+				calendar += '</div>'
+			}
+			calendar += '</div>'
+			calendar += '</div>'
+			calendar += '</div>'
+			$('.calendar').append(calendar);
         }
-		calendar += '</div>'
-		calendar += '</div>'
-		$('.calendar').append(calendar);
     }
-	// calendar(0);
+	calendar.init();
 
-	for(k=0;k<12;k++){
-		calendar(k);
-    }
+	// $('.calendar .table .week').selectable({
+	// 	cancel: 'div.grayed',
+	// 	stop: function( event, ui ){
+    //
+    //     },
+	// 	selected: function( event, ui ) {
+	// 		console.log(ui.selected);
+	// 		// if( ui.selected.hasClass('day')){
+	// 		// 	ui.selected.addClass('selected');
+    //         // }
+    //     }
+    // });
 
-	$(document).on('click','.day',function(){
+    var shiftArray = [];
+	$(document).on('click','.day',function(e){
+		if(e.shiftKey) {
+			// console.log( e.target )
+			shiftArray.push(e.target.dataset.role);
+			if( shiftArray.length > 1 ){
+				console.log(shiftArray);
+				// console.log(moment(shiftArray[0]).isBefore(shiftArray[1]))
+                var isBefore = moment(shiftArray[0]).isBefore(shiftArray[1]);
+				if( isBefore ){
+					var startDay = moment(shiftArray[0]);
+					var endDay = moment(shiftArray[1]);
+				}else{
+					var startDay = moment(shiftArray[1]);
+					var endDay = moment(shiftArray[0]);
+				}
+				var diff = endDay.diff(startDay, 'days');
+
+                // console.log(diff);
+				// var today = moment().add(add, 'month');
+				// var element = $('div[data-role="2020-07-08"]');
+
+				for (var i = 0; i <= diff; i++ ){
+					var n = 1;
+					if( i === 0 ) n = 0;
+					// console.log(startDay.format('YYYY-MM-DD'));
+					// console.log(i);
+					var select = startDay.add(n, 'days').format('YYYY-MM-DD');
+					console.log(select);
+					$('div[data-role='+ select +']').addClass('selected');
+				}
+				shiftArray = [];
+			}
+			return;
+		}
+
 		if( ! $(this).hasClass('selected')){
 			$(this).addClass('selected');
         }else{
