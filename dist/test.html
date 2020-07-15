@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>test</title>
+</head>
+<body>
+<section id="app">
+    <div>
+        <button @click="btn()">버튼</button>
+    </div>
+</section>
+</body>
+
+<script type="text/javascript">
+	var app = new Vue({
+		el: '#app',
+		data: {
+		},
+		mounted: function () {
+		},
+		methods: {
+			btn: function () {
+				var self = this;
+				axios.get('https://yesno.wtf/api')
+					.then(function (response) {
+						console.log(response.data.answer)
+					})
+					.catch(function (error) {
+						console.log( '에러! API 요청에 오류가 있습니다. ' + error)
+					})
+			}
+		}
+	});
+</script>
+
+</html>

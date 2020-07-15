@@ -5,12 +5,20 @@
 .blind{position:absolute;left:-99999px;top:-9999999px;font-size:0;}
 .break {display:block;}
 
-.calendar{
+#wrapper{
     max-width:1440px;
+    .controls{
+        padding:10px 10px 0;display:flex;justify-content:space-between;
+    }
+}
+.calendar{
     .content{
-        width:33.3%;padding:10px;float:left;height:440px;
+        width:33.3%;padding:10px;float:left;height:460px;
         &:after{
             content:"";display:block;clear:both;
+        }
+        @media (max-width: 1024px){
+            width:50%;
         }
     }
     .wrap{
@@ -19,10 +27,31 @@
     .week{
         display:flex;
         > div{
-            border:solid #ccc;border-width:1px 1px 0 0;width:calc(100% / 7 );height:60px;
+            border:solid #ccc;border-width:1px 1px 0 0;width:calc(100% / 7 );height:60px;font-size:0.9em;
+            &:nth-child(1){
+                color:red;
+            }
+            &:nth-child(7){
+                color:blue;
+            }
+            &.grayed{
+                color:rgba(0,0,0,.2);
+            }
+            .number{
+                font-size:12px;padding-left:2px;display:block;
+            }
         }
-        .grayed{
-            color:rgba(0,0,0,.2);
+        .day{
+            cursor:pointer;user-select:none;position:relative;
+            .value{
+                display:block;color:#666;padding:0 2px;
+            }
+            //.button{
+            //    position:absolute;left:0;top:0;width:100%;height:100%;z-index:3;
+            //}
+        }
+        .pre-selected{
+            background-color:antiquewhite;
         }
         .selected{
             background-color:deepskyblue;

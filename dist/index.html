@@ -8,90 +8,229 @@
 </head>
 <body>
 <div id="wrapper">
-    <div class="calendar">
+    <div class="controls">
+        <button onclick="calendar.yearChangePrev();">이전</button>
+        <button onclick="calendar.yearChangeNext();">다음</button>
     </div>
+    <div class="calendar"></div>
+    <div class="detail_month_calendar"></div>
 </div>
 
 <script type="text/javascript" src="js/lib.min.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
 <script>
 
+	var date = [
+		{
+			'date': '2020-07-01',
+			'value': 1,
+		},
+		{
+			'date': '2020-07-02',
+			'value': 11,
+		},
+		{
+			'date': '2020-07-03',
+			'value': 2,
+		},
+		{
+			'date': '2020-07-04',
+			'value': 3,
+		},
+		{
+			'date': '2020-07-05',
+			'value': 14,
+		},
+		{
+			'date': '2020-07-06',
+			'value': 1,
+		},
+		{
+			'date': '2020-07-07',
+			'value': 2,
+		},
+		{
+			'date': '2020-07-08',
+			'value': 5,
+		},
+		{
+			'date': '2020-07-09',
+			'value': 12,
+		},
+		{
+			'date': '2020-07-10',
+			'value': 13,
+		},
+		{
+			'date': '2020-07-11',
+			'value': 3,
+		},
+		{
+			'date': '2020-07-12',
+			'value': 25,
+		},
+		{
+			'date': '2020-07-13',
+			'value': 2,
+		},
+		{
+			'date': '2020-07-14',
+			'value': 25,
+		},
+		{
+			'date': '2020-07-15',
+			'value': 15,
+		},
+		{
+			'date': '2020-07-16',
+			'value': 6,
+		},
+		{
+			'date': '2020-07-17',
+			'value': 0,
+		},
+		{
+			'date': '2020-07-18',
+			'value': 1,
+		},
+		{
+			'date': '2020-07-19',
+			'value': 12,
+		},
+		{
+			'date': '2020-07-20',
+			'value': 21,
+		},
+		{
+			'date': '2020-07-21',
+			'value': 3,
+		},
+		{
+			'date': '2020-07-22',
+			'value': 4,
+		},
+		{
+			'date': '2020-07-23',
+			'value': 2,
+		},
+		{
+			'date': '2020-07-24',
+			'value': 3,
+		},
+		{
+			'date': '2020-07-25',
+			'value': 6,
+		},
+		{
+			'date': '2020-07-26',
+			'value': 3,
+		},
+		{
+			'date': '2020-07-27',
+			'value': 7,
+		},
+		{
+			'date': '2020-07-28',
+			'value': 1,
+		},
+		{
+			'date': '2020-07-29',
+			'value': 6,
+		},
+		{
+			'date': '2020-07-30',
+			'value': 1,
+		},
+		{
+			'date': '2020-07-31',
+			'value': 23,
+		}
+	];
+    var yearNumber = 0;
 	var calendar = {
 		init: function(){
-            this.yearPrint();
+			calendar.yearPrint(yearNumber);
         },
-        yearPrint: function(){
+		yearChangePrev: function(){
+			$('.calendar').empty();
+			yearNumber--;
+			calendar.yearPrint(yearNumber);
+		},
+		yearChangeNext: function(){
+			$('.calendar').empty();
+			yearNumber++;
+			calendar.yearPrint(yearNumber);
+		},
+        yearPrint: function(year){
 			var repeat = 12;
 			for(var k = 0; k < repeat; k++){
-				this.draw(k);
+				this.draw(k, year);
 			}
         },
-        draw: function(add){
-			var today = moment().add(add, 'month');
+        draw: function(addMonth, addYear){
+			var today = moment().add(addYear, 'year').add(addMonth, 'month');
 			var todayMonth = today.format('MM')
 			var startWeek = today.startOf('month').week();
-			// var endWeek = today.endOf('month').week();
 			var endWeek = today.endOf('month').week() === 1 ? 53 : today.endOf('month').week();
-			// console.log(today)
 			var calendar = '';
-			calendar += '<div class="content">'
-			calendar += '<p class="title">' + today.format('Y') + '년 ' + today.format('M') +'월</p>'
-			calendar += '<div class="wrap">'
-			calendar += '<div class="week header">'
-			calendar += '<div>일</div><div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div>토</div>'
-			calendar += '</div>'
-			calendar += '<div class="table">'
+			calendar += '<div class="content">';
+			//상단 영역
+			calendar += '<div class="top">';
+			calendar += '<p class="title">' + today.format('Y') + '년 ' + today.format('M') +'월</p>';
+			calendar += '<button data-start="'+today.startOf('month').format('YYYY-MM-DD')+'" data-end="'+today.endOf('month').format('YYYY-MM-DD')+'" class="month_all">전체선택</button>';
+			calendar += '<button data-role="'+today.startOf('month').format('YYYY-MM-DD')+'" class="month_detail">상세보기</button>';
+			calendar += '</div>';
+			//상단 끝
+			calendar += '<div class="wrap">';
+			calendar += '<div class="week header">';
+			calendar += '<div>일</div><div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div>토</div>';
+			calendar += '</div>';
+			calendar += '<div class="table">';
 
 			for( var week = startWeek; week <= endWeek; week++ ){
-				calendar += '<div class="week">'
+				calendar += '<div class="week">';
 				for(var i=0; i<7; i++ ){
 					var current = today.week(week).startOf('week').add(i, 'day');
 
-					// var isToday = today.format('YYYYMMDD') === current.format('YYYYMMDD') ? 'today' : '';
-					// let isGrayed = current.format('MM') === today.format('MM') ? '' : 'grayed';
-
-					// console.log(todayMonth)
-					if( current.format('MM') !== todayMonth){
+					if( current.format('MM') !== todayMonth){ // 현재 달 외에 부분
 						calendar += '<div class="grayed">';
+						calendar += '<span class="number">'+ current.format('D') +'</span>';
 					}else{
 						calendar += '<div class="day" data-role="'+ current.format('YYYY-MM-DD') + '">';
-                    }
+						calendar += '<span class="number" data-role="'+ current.format('YYYY-MM-DD') + '">'+ current.format('D') +'</span>';
 
-					calendar += '<span class="number">'+ current.format('D') +'</span>';
-					calendar += '</div>'
+						// data 넣는 부분
+						var content = date.filter(function(i){
+							return i.date === current.format('YYYY-MM-DD');
+						})
+						if( content.length > 0 ){
+							calendar += '<span class="value" title="데이터" data-role="'+ current.format('YYYY-MM-DD') + '">'+  content[0].value +'</span>';
+                        }
+
+						// calendar += '<button class="button" data-role="'+ current.format('YYYY-MM-DD') + '"></button>';
+                    }
+					calendar += '</div>';
 
 				}
-				calendar += '</div>'
+				calendar += '</div>';
 			}
-			calendar += '</div>'
-			calendar += '</div>'
-			calendar += '</div>'
+			calendar += '</div>';
+			calendar += '</div>';
+			calendar += '</div>';
 			$('.calendar').append(calendar);
         }
     }
 	calendar.init();
 
-	// $('.calendar .table .week').selectable({
-	// 	cancel: 'div.grayed',
-	// 	stop: function( event, ui ){
-    //
-    //     },
-	// 	selected: function( event, ui ) {
-	// 		console.log(ui.selected);
-	// 		// if( ui.selected.hasClass('day')){
-	// 		// 	ui.selected.addClass('selected');
-    //         // }
-    //     }
-    // });
-
+	// shift 클릭하고 선택 (영역 선택)
     var shiftArray = [];
 	$(document).on('click','.day',function(e){
 		if(e.shiftKey) {
-			// console.log( e.target )
+			$(this).addClass('pre-selected');
 			shiftArray.push(e.target.dataset.role);
 			if( shiftArray.length > 1 ){
+				// console.log('keydown');
 				console.log(shiftArray);
-				// console.log(moment(shiftArray[0]).isBefore(shiftArray[1]))
                 var isBefore = moment(shiftArray[0]).isBefore(shiftArray[1]);
 				if( isBefore ){
 					var startDay = moment(shiftArray[0]);
@@ -101,20 +240,14 @@
 					var endDay = moment(shiftArray[0]);
 				}
 				var diff = endDay.diff(startDay, 'days');
-
-                // console.log(diff);
-				// var today = moment().add(add, 'month');
-				// var element = $('div[data-role="2020-07-08"]');
-
 				for (var i = 0; i <= diff; i++ ){
 					var n = 1;
 					if( i === 0 ) n = 0;
-					// console.log(startDay.format('YYYY-MM-DD'));
-					// console.log(i);
 					var select = startDay.add(n, 'days').format('YYYY-MM-DD');
-					console.log(select);
+					// console.log(select);
 					$('div[data-role='+ select +']').addClass('selected');
 				}
+				$('.pre-selected').each(function(){ $(this).removeClass('pre-selected'); });
 				shiftArray = [];
 			}
 			return;
@@ -125,6 +258,32 @@
         }else{
 			$(this).removeClass('selected');
         }
+    });
+
+	// shift 에서 손떼면 초기화
+	$(document).keyup(function (e) {
+		if (e.keyCode === 16) {
+			$('.pre-selected').each(function(){ $(this).removeClass('pre-selected'); });
+			shiftArray = [];
+		}
+	});
+
+	// 전체선택
+	$(document).on('click','.month_all',function(){
+		var startDay = moment($(this).data('start'));
+		var endDay = moment($(this).data('end'));
+		var diff = endDay.diff(startDay, 'days');
+		for (var i = 0; i <= diff; i++ ){
+			var n = 1;
+			if( i === 0 ) n = 0;
+			var select = startDay.add(n, 'days').format('YYYY-MM-DD');
+
+			if( !$('div[data-role='+ select +']').hasClass('selected')){
+				$('div[data-role='+ select +']').addClass('selected');
+            }else{
+				$('div[data-role='+ select +']').removeClass('selected');
+            }
+		}
     });
 
 </script>

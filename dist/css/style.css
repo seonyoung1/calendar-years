@@ -155,21 +155,33 @@ img {
   display: block;
 }
 
-.calendar {
+#wrapper {
   max-width: 1440px;
+}
+
+#wrapper .controls {
+  padding: 10px 10px 0;
+  display: flex;
+  justify-content: space-between;
 }
 
 .calendar .content {
   width: 33.3%;
   padding: 10px;
   float: left;
-  height: 440px;
+  height: 460px;
 }
 
 .calendar .content:after {
   content: "";
   display: block;
   clear: both;
+}
+
+@media (max-width: 1024px) {
+  .calendar .content {
+    width: 50%;
+  }
 }
 
 .calendar .wrap {
@@ -186,10 +198,41 @@ img {
   border-width: 1px 1px 0 0;
   width: calc(100% / 7);
   height: 60px;
+  font-size: 0.9em;
 }
 
-.calendar .week .grayed {
+.calendar .week > div:nth-child(1) {
+  color: red;
+}
+
+.calendar .week > div:nth-child(7) {
+  color: blue;
+}
+
+.calendar .week > div.grayed {
   color: rgba(0, 0, 0, 0.2);
+}
+
+.calendar .week > div .number {
+  font-size: 12px;
+  padding-left: 2px;
+  display: block;
+}
+
+.calendar .week .day {
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+}
+
+.calendar .week .day .value {
+  display: block;
+  color: #666;
+  padding: 0 2px;
+}
+
+.calendar .week .pre-selected {
+  background-color: antiquewhite;
 }
 
 .calendar .week .selected {
