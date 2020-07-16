@@ -12,11 +12,14 @@
         <button onclick="calendar.yearChangePrev();">이전</button>
         <button onclick="calendar.yearChangeNext();">다음</button>
     </div>
+    <!-- 주 달력 -->
     <div class="main_calendar">
         <div class="calendar"></div>
     </div>
+    <!-- 상세 보기 눌렀을 때 나오는 달력 -->
     <div class="detail_calendar is-hidden">
         <button class="close">닫기</button>
+        <div class="select_months"></div>
         <div class="calendar"></div>
     </div>
 </div>
@@ -154,6 +157,7 @@
     var yearNumber = 0;
     var $main = $('.main_calendar').find('.calendar');
 	var $detail = $('.detail_calendar').find('.calendar');
+	var $pre = $('.pre-selected');
 	var calendar = {
 		init: function(){
 			calendar.yearPrint(yearNumber);
@@ -180,21 +184,27 @@
 			$main.append(calendar);
         },
         detailCalendar: function(date){
-			var today = moment(date);
-			var calendar = this.draw(today);
+			var selectedDay = moment(date);
+			var calendar = this.draw(selectedDay);
 			$detail.empty().append(calendar);
+
+			// 월 선택 박스
+			var select = this.selectBox(selectedDay);
+			// console.log(select)
+			$detail.parent().find('.select_months').empty().append(select);
         },
         draw: function(today){
-			var todayMonth = today.format('MM')
-			var startWeek = today.startOf('month').week();
-			var endWeek = today.endOf('month').week() === 1 ? 53 : today.endOf('month').week();
+			var todayMonth = today.clone().format('MM')
+			var startWeek = today.clone().startOf('month').week();
+			var endWeek = today.clone().endOf('month').week() === 1 ? 53 : today.endOf('month').week();
+
 			var calendar = '';
 			calendar += '<div class="content">';
 			//상단 영역
 			calendar += '<div class="top">';
 			calendar += '<p class="title">' + today.format('Y') + '년 ' + today.format('M') +'월</p>';
-			calendar += '<button data-start="'+today.startOf('month').format('YYYY-MM-DD')+'" data-end="'+today.endOf('month').format('YYYY-MM-DD')+'" class="month_all">전체선택</button>';
-			calendar += '<button data-role="'+today.startOf('month').format('YYYY-MM-DD')+'" class="month_detail">상세보기</button>';
+			calendar += '<button data-start="'+ today.startOf('month').format('YYYY-MM-DD') +'" data-end="'+ today.endOf('month').format('YYYY-MM-DD') +'" class="month_all">전체선택</button>';
+			calendar += '<button data-role="'+ today.startOf('month').format('YYYY-MM-DD') +'" class="month_detail">상세보기</button>';
 			calendar += '</div>';
 			//상단 끝
 			calendar += '<div class="wrap">';
@@ -206,7 +216,7 @@
 			for( var week = startWeek; week <= endWeek; week++ ){
 				calendar += '<div class="week">';
 				for(var i=0; i<7; i++ ){
-					var current = today.week(week).startOf('week').add(i, 'day');
+					var current = today.clone().week(week).startOf('week').add(i, 'day');
 
 					if( current.format('MM') !== todayMonth){ // 현재 달 외에 부분
 						calendar += '<div class="grayed">';
@@ -237,6 +247,24 @@
 
 			// $('.calendar').append(calendar);
 			return calendar
+        },
+        selectBox: function(today){
+			var str = '';
+            str += '<label for="select_months" class="blind">달 선택</label>';
+			str += '<select id="select_months">';
+			for( var i = 0; i < 7; i++ ){
+                var date = today.clone().add(i - 3, 'month');
+                if( i - 3 === 0 ){
+					str += '<option selected value="'+ date.format('YYYY-MM') +'">';
+                }else{
+					str += '<option value="'+ date.format('YYYY-MM') +'">';
+                }
+				str += date.format('Y') + '월 ' + date.format('MM') + '월';
+				str += '</option>';
+			}
+			str += '</select>';
+			str += '<button type="button" class="search">검색</button>'
+            return str
         }
     }
 	calendar.init();
@@ -251,22 +279,20 @@
 				// console.log('keydown');
 				console.log(shiftArray);
                 var isBefore = moment(shiftArray[0]).isBefore(shiftArray[1]);
+				var startDay, endDay;
 				if( isBefore ){
-					var startDay = moment(shiftArray[0]);
-					var endDay = moment(shiftArray[1]);
+					startDay = moment(shiftArray[0]);
+					endDay = moment(shiftArray[1]);
 				}else{
-					var startDay = moment(shiftArray[1]);
-					var endDay = moment(shiftArray[0]);
+					startDay = moment(shiftArray[1]);
+					endDay = moment(shiftArray[0]);
 				}
 				var diff = endDay.diff(startDay, 'days');
 				for (var i = 0; i <= diff; i++ ){
-					var n = 1;
-					if( i === 0 ) n = 0;
-					var select = startDay.add(n, 'days').format('YYYY-MM-DD');
-					// console.log(select);
+					var select = startDay.clone().add(i, 'days').format('YYYY-MM-DD');
 					$('div[data-role='+ select +']').addClass('selected');
 				}
-				$('.pre-selected').each(function(){ $(this).removeClass('pre-selected'); });
+				$pre.each(function(){ $(this).removeClass('pre-selected'); });
 				shiftArray = [];
 			}
 			return;
@@ -282,7 +308,7 @@
 	// shift 에서 손떼면 초기화
 	$(document).keyup(function (e) {
 		if (e.keyCode === 16) {
-			$('.pre-selected').each(function(){ $(this).removeClass('pre-selected'); });
+			$pre.each(function(){ $(this).removeClass('pre-selected'); });
 			shiftArray = [];
 		}
 	});
@@ -293,13 +319,12 @@
 		var endDay = moment($(this).data('end'));
 		var diff = endDay.diff(startDay, 'days');
 		for (var i = 0; i <= diff; i++ ){
-			var n = 1;
-			if( i === 0 ) n = 0;
-			var select = startDay.add(n, 'days').format('YYYY-MM-DD');
-			if( !$('div[data-role='+ select +']').hasClass('selected')){
-				$('div[data-role='+ select +']').addClass('selected');
+			var select = startDay.clone().add(i, 'days').format('YYYY-MM-DD');
+			var role = $('div[data-role='+ select +']');
+			if( ! role.hasClass('selected')){
+				role.addClass('selected');
             }else{
-				$('div[data-role='+ select +']').removeClass('selected');
+				role.removeClass('selected');
             }
 		}
     });
@@ -308,12 +333,20 @@
 	$(document).on('click','.month_detail',function(){
 		var date = $(this).data('role');
 		calendar.detailCalendar(date);
-		$('.detail_calendar').removeClass('is-hidden').addClass('is-active');
+		$detail.parent().removeClass('is-hidden').addClass('is-active');
 	});
 
-	$(document).on('click','.detail_calendar .close',function(){
-		$('.detail_calendar').removeClass('is-active').addClass('is-hidden');
+	// 상세 보기 닫기
+	$(document).on('click', '.detail_calendar .close',function(){
+		$detail.parent().removeClass('is-active').addClass('is-hidden');
 	});
+
+	// 상세 보기 월 선택
+    $(document).on('click', '.detail_calendar .search', function(){
+    	var value = $('#select_months').val();
+    	// console.log(value)
+		calendar.detailCalendar(value);
+    })
 
 </script>
 </body>

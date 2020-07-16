@@ -6,7 +6,7 @@
 .break {display:block;}
 
 #wrapper{
-    max-width:1440px;
+    max-width:1440px;margin:0 auto;
     .controls{
         padding:10px 10px 0;display:flex;justify-content:space-between;
     }
@@ -60,10 +60,10 @@
             //}
         }
         .pre-selected{
-            background-color:antiquewhite;
+            background-color:#EAF2DE;
         }
         .selected{
-            background-color:deepskyblue;
+            background-color:rgba(37,156,135,.4);
         }
         &.header > div{
             height:25px;text-align:center;font-size:0.82em;

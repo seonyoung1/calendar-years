@@ -157,6 +157,7 @@ img {
 
 #wrapper {
   max-width: 1440px;
+  margin: 0 auto;
 }
 
 #wrapper .controls {
@@ -247,11 +248,11 @@ img {
 }
 
 .calendar .week .pre-selected {
-  background-color: antiquewhite;
+  background-color: #EAF2DE;
 }
 
 .calendar .week .selected {
-  background-color: deepskyblue;
+  background-color: rgba(37, 156, 135, 0.4);
 }
 
 .calendar .week.header > div {
