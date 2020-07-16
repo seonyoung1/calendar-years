@@ -157,7 +157,6 @@
     var yearNumber = 0;
     var $main = $('.main_calendar').find('.calendar');
 	var $detail = $('.detail_calendar').find('.calendar');
-	var $pre = $('.pre-selected');
 	var calendar = {
 		init: function(){
 			calendar.yearPrint(yearNumber);
@@ -292,7 +291,7 @@
 					var select = startDay.clone().add(i, 'days').format('YYYY-MM-DD');
 					$('div[data-role='+ select +']').addClass('selected');
 				}
-				$pre.each(function(){ $(this).removeClass('pre-selected'); });
+				$('.pre-selected').each(function(){ $(this).removeClass('pre-selected'); });
 				shiftArray = [];
 			}
 			return;
@@ -306,9 +305,9 @@
     });
 
 	// shift 에서 손떼면 초기화
-	$(document).keyup(function (e) {
+	$(document).on('keyup', function (e) {
 		if (e.keyCode === 16) {
-			$pre.each(function(){ $(this).removeClass('pre-selected'); });
+			$('.pre-selected').each(function(){ $(this).removeClass('pre-selected'); });
 			shiftArray = [];
 		}
 	});
