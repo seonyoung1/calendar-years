@@ -37,17 +37,17 @@
 		{
 			'date': '2020-07-02',
 			'value': 11,
-			'value2': 100,
+			'value2': 99,
 		},
 		{
 			'date': '2020-07-03',
 			'value': 2,
-			'value2': 100,
+			'value2': 88,
 		},
 		{
 			'date': '2020-07-04',
 			'value': 3,
-			'value2': 100,
+			'value2': 123,
 		},
 		{
 			'date': '2020-07-05',
@@ -57,17 +57,17 @@
 		{
 			'date': '2020-07-06',
 			'value': 1,
-			'value2': 100,
+			'value2': 2354,
 		},
 		{
 			'date': '2020-07-07',
 			'value': 2,
-			'value2': 100,
+			'value2': 55,
 		},
 		{
 			'date': '2020-07-08',
 			'value': 5,
-			'value2': 100,
+			'value2': 11,
 		},
 		{
 			'date': '2020-07-09',
@@ -183,37 +183,58 @@
 			'date': '2020-07-31',
 			'value': 23,
 			'value2': 100,
+		},
+		{
+			'date': '2020-08-01',
+			'value': 8,
+			'value2': 1,
+		},
+		{
+			'date': '2020-11-01',
+			'value': 11,
+			'value2': 31,
+		},
+		{
+			'date': '2020-12-02',
+			'value': 12,
+			'value2': 2,
+		},
+		{
+			'date': '2021-02-01',
+			'value': 2021,
+			'value2': 1,
 		}
 	];
     var yearNumber = 0;
     var $main = $('.main_calendar').find('.calendar');
 	var $detail = $('.detail_calendar').find('.calendar');
+	var dateFormat = 'YYYY-MM-DD';
 	var calendar = {
 		init: function(){
 			calendar.yearPrint(yearNumber);
         },
-		yearChangePrev: function(){
+		yearChangePrev: function(){ // 이전 년도
 			$main.empty();
 			yearNumber--;
 			calendar.yearPrint(yearNumber);
 		},
-		yearChangeNext: function(){
+		yearChangeNext: function(){ // 다음 년도
 			$main.empty();
 			yearNumber++;
 			calendar.yearPrint(yearNumber);
 		},
-        yearPrint: function(year){
+        yearPrint: function(year){ // 현재달 기준 으로 12월 출력
 			var repeat = 12;
 			for(var k = 0; k < repeat; k++){
 				calendar.mainCalendar(k, year);
 			}
         },
-        mainCalendar: function(addMonth, addYear){
+        mainCalendar: function(addMonth, addYear){ // 메인 달력
 			var today = moment().add(addYear, 'year').add(addMonth, 'month');
 			var calendar = this.draw(today);
 			$main.append(calendar);
         },
-        detailCalendar: function(date){
+        detailCalendar: function(date){ // 상세 누르면 나오는 달력
 			var selectedDay = moment(date);
 			var calendar = this.draw(selectedDay);
 			$detail.empty().append(calendar);
@@ -223,18 +244,18 @@
 			// console.log(select)
 			$detail.parent().find('.select_months').empty().append(select);
         },
-        draw: function(today){
+        draw: function(today){ // 달력 그리기
 			var todayMonth = today.clone().format('MM')
 			var startWeek = today.clone().startOf('month').week();
-			var endWeek = today.clone().endOf('month').week() === 1 ? 53 : today.endOf('month').week();
+			var endWeek = today.clone().endOf('month').week() === 1 ? 53 : today.endOf('month').week(); // moment.js 에서 week=53 은 마지막 주
 
 			var calendar = '';
 			calendar += '<div class="content">';
 			//상단 영역
 			calendar += '<div class="top">';
 			calendar += '<p class="title">' + today.format('Y') + '년 ' + today.format('M') +'월</p>';
-			calendar += '<button data-start="'+ today.startOf('month').format('YYYY-MM-DD') +'" data-end="'+ today.endOf('month').format('YYYY-MM-DD') +'" class="month_all">전체선택</button>';
-			calendar += '<button data-role="'+ today.startOf('month').format('YYYY-MM-DD') +'" class="month_detail">상세보기</button>';
+			calendar += '<button data-start="'+ today.startOf('month').format(dateFormat) +'" data-end="'+ today.endOf('month').format(dateFormat) +'" class="month_all">전체선택</button>';
+			calendar += '<button data-role="'+ today.startOf('month').format(dateFormat) +'" class="month_detail">상세보기</button>';
 			calendar += '</div>';
 			//상단 끝
 			calendar += '<div class="wrap">';
@@ -252,34 +273,33 @@
 						calendar += '<div class="grayed">';
 						calendar += '<span class="number">'+ current.format('D') +'</span>';
 					}else{
-						calendar += '<div class="day" data-role="'+ current.format('YYYY-MM-DD') + '">';
-						calendar += '<span class="number" data-role="'+ current.format('YYYY-MM-DD') + '">'+ current.format('D') +'</span>';
+						calendar += '<div class="day" data-role="'+ current.format(dateFormat) + '">';
+						calendar += '<span class="number" data-role="'+ current.format(dateFormat) + '">'+ current.format('D') +'</span>';
 
 						// data 넣는 부분
 						var content = date.filter(function(i){
-							return i.date === current.format('YYYY-MM-DD');
+							return i.date === current.format(dateFormat);
 						})
 						if( content.length > 0 ){
 							calendar += '<span class="value" title="데이터">'+  content[0].value +'</span>';
 							calendar += '<span class="value" title="데이터2">'+  content[0].value2 +'</span>';
                         }
 
-						// calendar += '<button class="button" data-role="'+ current.format('YYYY-MM-DD') + '"></button>';
+						// calendar += '<button class="button" data-role="'+ current.format(format) + '"></button>';
                     }
-					calendar += '</div>';
-
+					calendar += '</div>'; // grayed or day
 				}
-				calendar += '</div>';
+				calendar += '</div>'; // .week
 			}
 
-			calendar += '</div>';
-			calendar += '</div>';
-			calendar += '</div>';
+			calendar += '</div>'; // .table
+			calendar += '</div>'; // .wrap
+			calendar += '</div>'; // .content
 
 			// $('.calendar').append(calendar);
 			return calendar
         },
-        selectBox: function(today){
+        selectBox: function(today){ // 상세 달력에 나오는 select 박스
 			var str = '';
             str += '<label for="select_months" class="blind">달 선택</label>';
 			str += '<select id="select_months">';
@@ -294,7 +314,7 @@
 				str += '</option>';
 			}
 			str += '</select>';
-			str += '<button type="button" class="search">검색</button>'
+			str += '<button type="button" class="search">검색</button>';
             return str
         }
     }
@@ -307,10 +327,9 @@
 			$(this).addClass('pre-selected');
 			// var role = e.target.dataset.role;
 			// if( role === undefined ) role = e.target.parentNode.dataset.role;
-			var role = $(e.target).data('role');
-			if( role === undefined ) role = $(e.target).closest('.day').data('role');
-
+			var role = $(e.target).data('role') === undefined ? $(e.target).closest('.day').data('role') : $(e.target).data('role') ;
 			shiftArray.push(role);
+
 			if( shiftArray.length > 1 ){
 				// console.log('keydown');
 				console.log(shiftArray);
@@ -325,7 +344,7 @@
 				}
 				var diff = endDay.diff(startDay, 'days');
 				for (var i = 0; i <= diff; i++ ){
-					var select = startDay.clone().add(i, 'days').format('YYYY-MM-DD');
+					var select = startDay.clone().add(i, 'days').format(dateFormat);
 					$('div[data-role='+ select +']').addClass('selected');
 				}
 				$('.pre-selected').each(function(){ $(this).removeClass('pre-selected'); });
@@ -355,7 +374,7 @@
 		var endDay = moment($(this).data('end'));
 		var diff = endDay.diff(startDay, 'days');
 		for (var i = 0; i <= diff; i++ ){
-			var select = startDay.clone().add(i, 'days').format('YYYY-MM-DD');
+			var select = startDay.clone().add(i, 'days').format(dateFormat);
 			var role = $('div[data-role='+ select +']');
 			if( ! role.hasClass('selected')){
 				role.addClass('selected');

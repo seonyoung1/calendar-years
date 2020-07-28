@@ -216,7 +216,8 @@ img {
   width: calc(100% / 7);
   height: 60px;
   font-size: 0.9em;
-  padding: 2px;
+  position: relative;
+  padding: 5px 10px 10px 20px;
 }
 
 .calendar .week > div:nth-child(1) {
@@ -235,6 +236,9 @@ img {
   font-size: 12px;
   padding-left: 2px;
   display: block;
+  position: absolute;
+  left: 2px;
+  top: 2px;
 }
 
 .calendar .week .day {
@@ -245,8 +249,8 @@ img {
   display: block;
   color: #666;
   padding: 0 2px;
-  line-height: 1.1;
-  font-size: 0.8em;
+  line-height: 1.4;
+  font-size: 0.85em;
 }
 
 .calendar .week .pre-selected {
@@ -261,6 +265,7 @@ img {
   height: 25px;
   text-align: center;
   font-size: 0.82em;
+  padding: 0 2px;
 }
 
 .main_calendar .week .day {
