@@ -32,126 +32,157 @@
 		{
 			'date': '2020-07-01',
 			'value': 1,
+			'value2': 100,
 		},
 		{
 			'date': '2020-07-02',
 			'value': 11,
+			'value2': 100,
 		},
 		{
 			'date': '2020-07-03',
 			'value': 2,
+			'value2': 100,
 		},
 		{
 			'date': '2020-07-04',
 			'value': 3,
+			'value2': 100,
 		},
 		{
 			'date': '2020-07-05',
 			'value': 14,
+			'value2': 100,
 		},
 		{
 			'date': '2020-07-06',
 			'value': 1,
+			'value2': 100,
 		},
 		{
 			'date': '2020-07-07',
 			'value': 2,
+			'value2': 100,
 		},
 		{
 			'date': '2020-07-08',
 			'value': 5,
+			'value2': 100,
 		},
 		{
 			'date': '2020-07-09',
 			'value': 12,
+			'value2': 100,
 		},
 		{
 			'date': '2020-07-10',
 			'value': 13,
+			'value2': 100,
 		},
 		{
 			'date': '2020-07-11',
 			'value': 3,
+			'value2': 100,
 		},
 		{
 			'date': '2020-07-12',
 			'value': 25,
+			'value2': 100,
 		},
 		{
 			'date': '2020-07-13',
 			'value': 2,
+			'value2': 100,
 		},
 		{
 			'date': '2020-07-14',
 			'value': 25,
+			'value2': 100,
 		},
 		{
 			'date': '2020-07-15',
 			'value': 15,
+			'value2': 100,
 		},
 		{
 			'date': '2020-07-16',
 			'value': 6,
+			'value2': 100,
 		},
 		{
 			'date': '2020-07-17',
 			'value': 0,
+			'value2': 100,
 		},
 		{
 			'date': '2020-07-18',
 			'value': 1,
+			'value2': 100,
 		},
 		{
 			'date': '2020-07-19',
 			'value': 12,
+			'value2': 100,
 		},
 		{
 			'date': '2020-07-20',
 			'value': 21,
+			'value2': 100,
 		},
 		{
 			'date': '2020-07-21',
 			'value': 3,
+			'value2': 100,
 		},
 		{
 			'date': '2020-07-22',
 			'value': 4,
+			'value2': 100,
 		},
 		{
 			'date': '2020-07-23',
 			'value': 2,
+			'value2': 100,
 		},
 		{
 			'date': '2020-07-24',
 			'value': 3,
+			'value2': 100,
 		},
 		{
 			'date': '2020-07-25',
 			'value': 6,
+			'value2': 100,
 		},
 		{
 			'date': '2020-07-26',
 			'value': 3,
+			'value2': 100,
 		},
 		{
 			'date': '2020-07-27',
 			'value': 7,
+			'value2': 100,
 		},
 		{
 			'date': '2020-07-28',
 			'value': 1,
+			'value2': 100,
 		},
 		{
 			'date': '2020-07-29',
 			'value': 6,
+			'value2': 100,
 		},
 		{
 			'date': '2020-07-30',
 			'value': 1,
+			'value2': 100,
 		},
 		{
 			'date': '2020-07-31',
 			'value': 23,
+			'value2': 100,
 		}
 	];
     var yearNumber = 0;
@@ -229,7 +260,8 @@
 							return i.date === current.format('YYYY-MM-DD');
 						})
 						if( content.length > 0 ){
-							calendar += '<span class="value" title="데이터" data-role="'+ current.format('YYYY-MM-DD') + '">'+  content[0].value +'</span>';
+							calendar += '<span class="value" title="데이터">'+  content[0].value +'</span>';
+							calendar += '<span class="value" title="데이터2">'+  content[0].value2 +'</span>';
                         }
 
 						// calendar += '<button class="button" data-role="'+ current.format('YYYY-MM-DD') + '"></button>';
@@ -273,7 +305,12 @@
 	$(document).on('click','.main_calendar .day',function(e){
 		if(e.shiftKey) {
 			$(this).addClass('pre-selected');
-			shiftArray.push(e.target.dataset.role);
+			// var role = e.target.dataset.role;
+			// if( role === undefined ) role = e.target.parentNode.dataset.role;
+			var role = $(e.target).data('role');
+			if( role === undefined ) role = $(e.target).closest('.day').data('role');
+
+			shiftArray.push(role);
 			if( shiftArray.length > 1 ){
 				// console.log('keydown');
 				console.log(shiftArray);

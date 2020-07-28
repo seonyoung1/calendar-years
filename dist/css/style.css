@@ -245,6 +245,8 @@ img {
   display: block;
   color: #666;
   padding: 0 2px;
+  line-height: 1.1;
+  font-size: 0.8em;
 }
 
 .calendar .week .pre-selected {
